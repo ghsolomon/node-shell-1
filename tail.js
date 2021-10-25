@@ -1,5 +1,4 @@
-const fs = require('fs').promises;
-const path = require('path');
+const readFile = require("./readFile");
 
 const formatFilename = (fileName) => `==> ${fileName} <==\n`;
 
@@ -7,13 +6,13 @@ module.exports = async (filesArray, done) => {
   const output = [];
   for (let file of filesArray) {
     try {
-      const data = await fs.readFile(path.join(__dirname, file), 'utf8');
+      const data = await readFile(file);
       output.push(
-        formatFilename(file) + data.split('\n').slice(-11).join('\n')
+        formatFilename(file) + data.split("\n").slice(-11).join("\n")
       );
     } catch (error) {
-      done(error);
+      done("Could not find that file!");
     }
   }
-  done(output.join('\n\n'));
+  done(output.join("\n\n"));
 };
